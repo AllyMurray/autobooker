@@ -1,0 +1,62 @@
+﻿@model AutoBooking.WebUI.ViewModels.BookingViewModel
+
+@{
+    ViewBag.Title = "Activities";
+}
+
+<style>
+    .activity-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .btn {
+        margin-bottom: 8px;
+    }
+</style>
+
+<h2>Index</h2>
+
+@using (Html.BeginForm("UpdateBookings", "Booking", FormMethod.Post))
+{
+    <div class="activity-container">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Spin Classes</h3>
+            </div>
+            <div class="panel-body">
+                <div class="btn-group" style="display: flex; flex-direction: column;" data-toggle="buttons">
+                    @foreach (var userActivity in Model.UserActivities.Where(x => x.Text.ToLower().Contains("cycle")))
+                    {
+                        <label class="btn btn-primary">
+                            @*@Html.CheckBox("UserActivities", false, new { id = userActivity.Activity.Id }) @userActivity.Activity.Text*@
+                            <input type="checkbox" name="selectedActivityIds" value="@userActivity.Id" @(userActivity.IsChecked ? "checked" : string.Empty) /> @userActivity.Text
+                        </label>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Exercise Classes</h3>
+            </div>
+            <div class="panel-body">
+                <div class="btn-group" style="display: flex; flex-direction: column;" data-toggle="buttons">
+                    @foreach (var userActivity in Model.UserActivities.Where(x => !x.Text.ToLower().Contains("cycle")))
+                    {
+                        <label class="btn btn-primary">
+                            @*@Html.CheckBox("UserActivities", false, new { id = userActivity.Activity.Id }) @userActivity.Activity.Text*@
+                            <input type="checkbox" name="selectedActivityIds" class="checkbox" value="@userActivity.Id" @(userActivity.IsChecked ? "checked" : string.Empty) /> @userActivity.Text
+                        </label>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <input type="submit" class="btn btn-default" value="Save" />
+    </div>
+}
+
+
